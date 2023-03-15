@@ -3,7 +3,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from core import get_domain, is_safe_url, load_model, mongodb_connect
+from core import get_domain, is_safe_url, load_model, mongodb_connect, is_popular
 
 app = FastAPI()
 
@@ -24,10 +24,12 @@ def predict(url: str):
     if not is_safe_url(url):
         return {"domain": url, "prediction": "bad", "isSafe": False}
 
+    domain = get_domain(url)
+    if is_popular(domain):
+        return {"domain": domain, "prediction": "good", "isSafe": True}
+
     model = load_model()
     prediction = model.predict(np.array([url]))
-
-    domain = get_domain(url)
 
     client = mongodb_connect()
     collection = client["admin"]["Phishing-Domains"]

@@ -3,7 +3,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from core import get_domain, is_safe_url, load_model, mongodb_connect, is_popular
+from core import get_domain, is_popular, is_safe_url, load_model, mongodb_connect
 
 app = FastAPI()
 
@@ -14,6 +14,11 @@ CORSMiddleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/")
+def home():
+    return "Hello, world!"
 
 
 @app.post("/api/predict")

@@ -1,5 +1,6 @@
 import pickle
 import re
+
 import pandas as pd
 import pymongo
 
@@ -45,6 +46,7 @@ def is_safe_url(string: str) -> bool:
     if re.match(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$", get_domain(string)):
         return False
     return re.match(r"^(?:https|ftps)://", string)
+
 
 def is_popular(domain: str) -> bool:
     """
